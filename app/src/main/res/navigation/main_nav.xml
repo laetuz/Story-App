@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.neotica.storyapp.Login"
+        android:name="com.neotica.storyapp.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 </navigation>

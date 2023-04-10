@@ -17,9 +17,21 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
     private lateinit var background: Drawable
     private lateinit var warning: Drawable
 
-    constructor(context: Context) : super(context){init()}
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs){init()}
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr){init()}
+    constructor(context: Context) : super(context) {
+        init()
+    }
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        init()
+    }
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        init()
+    }
 
     private fun showWarning() {
         setButtonDrawables(endOfTheText = clearImage, bottomOfTheText = warning)
@@ -59,12 +71,12 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
             if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
                 clearButtonEnd = (clearImage.intrinsicWidth + paddingStart).toFloat()
                 when {
-                    event?.x !!< clearButtonEnd -> isClearButtonClicked = true
+                    event?.x!! < clearButtonEnd -> isClearButtonClicked = true
                 }
             } else {
                 clearButtonStart = (width - paddingEnd - clearImage.intrinsicWidth).toFloat()
                 when {
-                    event?.x !!> clearButtonStart -> isClearButtonClicked = true
+                    event?.x!! > clearButtonStart -> isClearButtonClicked = true
                 }
             }
             if (isClearButtonClicked) {
@@ -116,7 +128,6 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
                     }
                 } else hideClearButton()
             }
-
             override fun afterTextChanged(s: Editable) {
             }
         })

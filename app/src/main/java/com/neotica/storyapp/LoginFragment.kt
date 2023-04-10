@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.neotica.storyapp.databinding.FragmentLoginBinding
 
-class Login : Fragment() {
+class LoginFragment : Fragment() {
     private var _binding : FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
