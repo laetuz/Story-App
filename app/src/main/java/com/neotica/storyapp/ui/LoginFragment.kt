@@ -16,11 +16,6 @@ class LoginFragment : Fragment() {
     private lateinit var etEmail : EmailCustomView
     private lateinit var etPassword : PasswordCustomView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

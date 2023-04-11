@@ -5,6 +5,7 @@ plugins {
     //SafeArgs
     id 'kotlin-android'
     id "androidx.navigation.safeargs"
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -68,4 +69,9 @@ dependencies {
     //Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+
+    //room
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
+    implementation "androidx.room:room-runtime:2.5.0-alpha02"
+    kapt "androidx.room:room-compiler:2.5.0-alpha02"
 }
