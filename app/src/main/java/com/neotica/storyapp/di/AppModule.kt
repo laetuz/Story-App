@@ -1,10 +1,8 @@
 package com.neotica.storyapp.di
 
 import com.neotica.storyapp.retrofit.ApiService
-import com.neotica.storyapp.ui.viewmodel.RegisterViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +25,3 @@ val networkModule = module {
     }
 }
 
-val registerViewModule = module {
-    viewModel { RegisterViewModel(get()) }
-}
