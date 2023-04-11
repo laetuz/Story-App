@@ -1,4 +1,4 @@
-package com.neotica.storyapp
+package com.neotica.storyapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
