@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.neotica.storyapp.databinding.FragmentRegisterBinding
 import com.neotica.storyapp.design.PasswordCustomView
 import com.neotica.storyapp.ui.viewmodel.RegisterViewModel
@@ -101,6 +102,7 @@ class RegisterFragment : Fragment() {
                 viewModel.success.observe(viewLifecycleOwner){
                     if (it){
                         Toast.makeText(context, "User Registered.", Toast.LENGTH_SHORT).show()
+                        onDestroy()
                     } else {
                         Toast.makeText(context, "Failed to register user.", Toast.LENGTH_SHORT).show()
                     }
@@ -116,5 +118,10 @@ class RegisterFragment : Fragment() {
                         etEmail.text != null && isValidEmail(etEmail.text.toString()) &&
                         etName.text.isNotEmpty()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

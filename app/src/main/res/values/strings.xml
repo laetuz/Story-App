@@ -2,8 +2,21 @@
     <string name="app_name">Story App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_button">Add Button</string>
 
     <!--Login/Register-->
     <string name="login">Login</string>
     <string name="register">Register</string>
+
+    <!--Item List-->
+    <string name="image_preview">Image Preview</string>
+    <string name="name_placeholder">Name</string>
+    <string name="desc_placeholder">Hello this is description</string>
+
+    <!--AddStory-->
+    <string name="btn_upload">Upload</string>
+    <string name="btn_gallery">Gallery</string>
+    <string name="btn_camera">Camera</string>
+    <string name="et_desc">Enter description…</string>
+    <string name="cd_picture">Picture preview.</string>
 </resources>

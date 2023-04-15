@@ -3,20 +3,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/login">
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/login"
         android:name="com.neotica.storyapp.ui.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_login_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.neotica.storyapp.ui.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.neotica.storyapp.ui.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_login"
+            app:destination="@id/login" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailStoryFragment"
+            app:destination="@id/detailStoryFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addStoryFragment"
+            app:destination="@id/addStoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailStoryFragment"
+        android:name="com.neotica.storyapp.ui.DetailStoryFragment"
+        android:label="DetailStoryFragment"
+        tools:layout="@layout/fragment_detail_story" >
+        <argument
+            android:name="image"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="desc"
+            app:argType="string" />
+        <argument
+            android:name="created"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/addStoryFragment"
+        android:name="com.neotica.storyapp.ui.AddStoryFragment"
+        android:label="AddStoryFragment"
+        tools:layout="@layout/fragment_add_story"/>
 </navigation>

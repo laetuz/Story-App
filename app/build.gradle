@@ -55,6 +55,7 @@ dependencies {
     implementation "io.insert-koin:koin-core:3.2.0"
     implementation "io.insert-koin:koin-android:3.2.0"
     //DataStore
+    implementation "androidx.datastore:datastore-core:1.0.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     //livedata
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0"

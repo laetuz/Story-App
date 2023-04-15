@@ -1,5 +1,6 @@
 package com.neotica.storyapp.di
 
+import com.neotica.storyapp.BuildConfig
 import com.neotica.storyapp.retrofit.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,7 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 val networkModule = module {
     single {
         val loggingInterceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+            HttpLoggingInterceptor().apply {
+                level =
+                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            }
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .build()
@@ -24,4 +28,10 @@ val networkModule = module {
         retrofit.create(ApiService::class.java)
     }
 }
+
+/*val preferencesModule = module {
+    single {
+        LoginPreferences.getInstance(androidContext().)
+    }
+}*/
 
