@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.storyapp.databinding.ItemStoryBinding
 import com.neotica.storyapp.ui.response.Story
+import com.neotica.storyapp.util.formatDateTime
 
 class MainAdapter(
     private val listStory: List<Story>,
@@ -21,8 +22,7 @@ class MainAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemStoryBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -34,7 +34,7 @@ class MainAdapter(
         val story = listStory[position]
         holder.binding.apply {
             tvName.text = story.name
-            tvDes.text = story.description
+            tvDate.text = formatDateTime(story.createdAt)
 
             Glide.with(context)
                 .load(story.photoUrl)

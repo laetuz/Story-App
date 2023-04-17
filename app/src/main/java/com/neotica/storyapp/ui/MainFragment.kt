@@ -43,40 +43,55 @@ class MainFragment : Fragment() {
         addStory()
         val prefLogin = LoginPreferences(requireContext())
         val token = prefLogin.getToken()
-        if (token.isNullOrEmpty()){
+        if (token.isNullOrEmpty()) {
             val action = MainFragmentDirections.actionMainFragmentToLogin()
             findNavController().navigate(action)
         }
+        viewModelSetup()
+    }
 
-        viewModel.stories.observe(viewLifecycleOwner){
-            when(it){
-                is ApiResult.Success->{
+    private fun viewModelSetup() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            Log.d("neotica", "refresh layout")
+            val action = findNavController().currentDestination?.id
+            action?.let { findNavController().navigate(it) }
+        }
+        viewModel.stories.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResult.Success -> {
                     setupList(it.data)
                     showLoading(false)
+                    binding.swipeRefreshLayout.isRefreshing = false
                 }
-                is ApiResult.Error->{
-                    Log.e("STORIES",it.errorMessage)
+                is ApiResult.Error -> {
+                    Log.e("STORIES", it.errorMessage)
                     showLoading(false)
                 }
-                is ApiResult.Loading->{
+                is ApiResult.Loading -> {
                     showLoading(true)
                 }
             }
         }
     }
 
-    private fun setupList(listStory:List<Story>) {
-        val adapterStory = MainAdapter(listStory,requireContext(),object : MainAdapter.StoryListener{
-            override fun onClick(story: Story) {
-                val image = story.photoUrl
-                val name = story.name
-                val desc = story.description
-                val created = story.createdAt
-                val action = MainFragmentDirections.actionMainFragmentToDetailStoryFragment(image, name, desc, created)
-                findNavController().navigate(action)
-            }
-        })
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+    private fun setupList(listStory: List<Story>) {
+        val adapterStory =
+            MainAdapter(listStory, requireContext(), object : MainAdapter.StoryListener {
+                override fun onClick(story: Story) {
+                    val image = story.photoUrl
+                    val name = story.name
+                    val desc = story.description
+                    val created = story.createdAt
+                    val action = MainFragmentDirections.actionMainFragmentToDetailStoryFragment(
+                        image,
+                        name,
+                        desc,
+                        created
+                    )
+                    findNavController().navigate(action)
+                }
+            })
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvStory.adapter = adapterStory
         binding.rvStory.layoutManager = layoutManager
     }
@@ -85,7 +100,7 @@ class MainFragment : Fragment() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun logout(){
+    private fun logout() {
         val prefLogin = LoginPreferences(requireContext())
         prefLogin.clearToken()
         val action = MainFragmentDirections.actionMainFragmentToLogin()
@@ -98,13 +113,14 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_logout->{
+            R.id.menu_logout -> {
                 logout()
             }
         }
         return super.onOptionsItemSelected(item)
     }
-    /*----Camera----*/
+
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -113,30 +129,30 @@ class MainFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (!allPermissionsGranted()) {
-                Toast.makeText(
-                    context,
-                    "Tidak mendapatkan permission.",
-                    Toast.LENGTH_SHORT
-                ).show()
-               // finish()
+                Toast.makeText(context, "Permission not granted.", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
-    private fun addStory(){
+
+    private fun addStory() {
         binding.fabMain.setOnClickListener {
             val action = MainFragmentDirections.actionMainFragmentToAddStoryFragment()
             findNavController().navigate(action)
         }
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
-                requireActivity(),
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
+                requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.stories
     }
 
     override fun onDestroy() {

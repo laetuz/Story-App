@@ -32,6 +32,5 @@ class AddStoryViewModel(private val apiService: ApiService) : ViewModel() {
                 _responseUpload.value = ApiResult.Error(e.message.toString())
             }
         }
-
     }
 }

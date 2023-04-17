@@ -20,17 +20,23 @@ import retrofit2.Response
 class LoginViewModel(private val apiService: ApiService) : ViewModel() {
     private val _responseLogin = MutableLiveData<ApiResult<UserLogin>>()
     val responseLogin: LiveData<ApiResult<UserLogin>> = _responseLogin
+    val isLoading: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false)
+    }
 
     fun login(email: String, password: String) {
         val loginInfo = User(email, password)
+        isLoading.value = true
         apiService.login(loginInfo).enqueue(object : Callback<LoginResponse>{
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 val result = response.body()
+                isLoading.value = false
                 if (result!=null){_responseLogin.value = ApiResult.Success(result.loginResult)}
                 Log.d("neotica","sukses mengambil respons")
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                isLoading.value = false
                 Log.d("neotica","galat mengambil respons")
             }
         })

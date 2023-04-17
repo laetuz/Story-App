@@ -1,28 +1,26 @@
 package com.neotica.storyapp.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.neotica.storyapp.R
 import com.neotica.storyapp.databinding.FragmentAddStoryBinding
-import com.neotica.storyapp.databinding.FragmentDetailStoryBinding
-import com.neotica.storyapp.databinding.FragmentMainBinding
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
-import com.neotica.storyapp.ui.adapter.MainAdapter
-import com.neotica.storyapp.ui.response.Story
 import com.neotica.storyapp.ui.viewmodel.AddStoryViewModel
-import com.neotica.storyapp.ui.viewmodel.MainViewModel
 import com.neotica.storyapp.util.Constant.CAMERA_X_RESULT
 import com.neotica.storyapp.util.rotateBitmap
 import com.neotica.storyapp.util.uriToFile
@@ -41,6 +39,7 @@ class AddStoryFragment : Fragment() {
     private val binding get() = _binding!!
     private var getFile: File? = null
     private  var isBackCamera:Boolean = false
+    private lateinit var currentPhotoPath: String
     private val viewModel: AddStoryViewModel by viewModel()
 
     override fun onCreateView(
@@ -66,9 +65,29 @@ class AddStoryFragment : Fragment() {
 
     private fun letsBind(){
         binding.apply {
-          //  btnCamera.setOnClickListener { launcherIntentCameraX.launch() }
+            btnCamera.setOnClickListener {
+                startTakePhoto()
+            }
             btnGallery.setOnClickListener { startGallery() }
-            btnUpload.setOnClickListener { uploadImage() }
+            btnUpload.setOnClickListener {
+                uploadImage()
+            }
+        }
+    }
+
+    private fun startTakePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.resolveActivity(requireContext().packageManager)
+
+        createTempFile("temp_", ".jpg", requireContext().applicationContext.cacheDir).also {
+            val photoURI: Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "com.neotica.storyapp",
+                it
+            )
+            currentPhotoPath = it.absolutePath
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            launcherIntentCamera.launch(intent)
         }
     }
 
@@ -76,11 +95,26 @@ class AddStoryFragment : Fragment() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+
+    private val launcherIntentCamera = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val myFile = File(currentPhotoPath)
+            getFile = myFile
+            val resultModule = rotateBitmap(BitmapFactory.decodeFile(myFile.path))
+
+            binding.ivPreview.setImageBitmap(resultModule)
+            Log.d("neotica","camera inserted into iv")
+        }
+    }
+
     private fun uploadImage() {
+        showLoading(true)
         if (getFile != null) {
             val desc = binding.etDesc.text.toString()
             if (desc.isEmpty()){
-                binding.etDesc.error = "Masukan deskripsi"
+                binding.etDesc.error = "Enter Description"
                 binding.etDesc.requestFocus()
             }else{
                 val file = reduceFileImage(getFile as File,isBackCamera)
@@ -94,10 +128,24 @@ class AddStoryFragment : Fragment() {
                 val prefLogin = LoginPreferences(requireContext())
                 var token = prefLogin.getToken().toString()
                 token = "Bearer $token"
+                viewModel.responseUpload.observe(viewLifecycleOwner){
+                    when (it){
+                        is ApiResult.Success -> {
+                            Toast.makeText(context, "Photo has been uploaded.", Toast.LENGTH_SHORT).show()
+                            val action = AddStoryFragmentDirections.actionAddStoryFragmentToMainFragment()
+                            showLoading(false)
+                            findNavController().navigate(action)
+                            findNavController().popBackStack()
+                        }
+                        is ApiResult.Error -> {}
+                        is ApiResult.Loading -> {}
+                    }
+                }
                 viewModel.uploadStory(token,imageMultipart,description)
+
             }
         } else {
-            Toast.makeText(context, "Silakan masukkan berkas gambar terlebih dahulu.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please input the picture first.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -118,22 +166,6 @@ class AddStoryFragment : Fragment() {
         return file
     }
 
-    private val launcherIntentCameraX = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == CAMERA_X_RESULT) {
-            val myFile = it.data?.getSerializableExtra("picture") as File
-            isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
-            getFile = myFile
-
-            val result = rotateBitmap(
-                BitmapFactory.decodeFile(myFile.path),
-                isBackCamera
-            )
-            binding.ivPreview.setImageBitmap(result)
-        }
-    }
-
     private fun startGallery() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
@@ -150,6 +182,7 @@ class AddStoryFragment : Fragment() {
             val myFile = uriToFile(selectedImg, requireContext())
             getFile = myFile
             binding.ivPreview.setImageURI(selectedImg)
+            Log.d("neotica","Image inserted into iv")
         }
     }
 

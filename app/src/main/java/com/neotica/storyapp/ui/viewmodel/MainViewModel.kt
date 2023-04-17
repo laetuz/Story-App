@@ -27,6 +27,18 @@ class MainViewModel(
         getStory()
     }
 
+/*    fun loadStories() {
+        _stories.value = ApiResult.Loading
+        viewModelScope.launch {
+            try {
+                val stories = repository.getStories()
+                _stories.value = ApiResult.Success(stories)
+            } catch (e: Exception) {
+                _stories.value = ApiResult.Error(e.message ?: "Unknown error")
+            }
+        }
+    }*/
+
     private fun getStory(){
         viewModelScope.launch {
             _stories.value = ApiResult.Loading

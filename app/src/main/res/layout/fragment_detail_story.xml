@@ -7,22 +7,47 @@
     android:padding="10dp"
     android:orientation="vertical">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:backgroundTint="@android:color/darker_gray">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/card_view"
+            app:layout_constraintStart_toEndOf="@+id/card_view"
+            app:layout_constraintTop_toTopOf="@+id/card_view"
+            tools:text="@string/name_placeholder" />
+
+    </androidx.cardview.widget.CardView>
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/card_view">
 
         <ImageView
             android:id="@+id/iv_story"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_width="300dp"
-            android:layout_height="500dp"
+            android:adjustViewBounds="true"
             android:contentDescription="background kuning"
-            android:scaleType="center"
+            android:scaleType="fitXY"
             android:transitionName="image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,15 +59,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/name_placeholder"
-                android:textSize="20sp"
-                android:transitionName="name" />
 
             <TextView
                 android:id="@+id/tv_description"
@@ -53,6 +69,7 @@
                 android:layout_marginBottom="5dp"
                 android:text="@string/desc_placeholder"
                 android:transitionName="desc" />
+
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="match_parent"

@@ -41,7 +41,7 @@
         android:id="@+id/detailStoryFragment"
         android:name="com.neotica.storyapp.ui.DetailStoryFragment"
         android:label="DetailStoryFragment"
-        tools:layout="@layout/fragment_detail_story" >
+        tools:layout="@layout/fragment_detail_story">
         <argument
             android:name="image"
             app:argType="string"
@@ -60,5 +60,10 @@
         android:id="@+id/addStoryFragment"
         android:name="com.neotica.storyapp.ui.AddStoryFragment"
         android:label="AddStoryFragment"
-        tools:layout="@layout/fragment_add_story"/>
+        tools:layout="@layout/fragment_add_story">
+        <action
+            android:id="@+id/action_addStoryFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment" />
+    </fragment>
 </navigation>

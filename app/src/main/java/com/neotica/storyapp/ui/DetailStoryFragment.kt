@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.neotica.storyapp.databinding.FragmentDetailStoryBinding
 import com.neotica.storyapp.ui.viewmodel.MainViewModel
+import com.neotica.storyapp.util.formatDateTime
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -36,12 +37,6 @@ class DetailStoryFragment : Fragment() {
             tvDescription.text = bundle.desc
             tvDate.text = "Created at: " + formatDateTime(bundle.created)
         }
-    }
-
-    private fun formatDateTime(isoDateString: String): String {
-        val dateTime = ZonedDateTime.parse(isoDateString)
-        val dateFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-        return dateFormatter.format(dateTime)
     }
 
     override fun onDestroy() {

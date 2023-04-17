@@ -10,6 +10,9 @@ import android.os.Environment
 import com.neotica.storyapp.R
 import java.io.*
 import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy"
@@ -41,7 +44,7 @@ fun createFile(application: Application): File {
 fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
     val matrix = Matrix()
     return if (isBackCamera) {
-        matrix.postRotate(90f)
+        matrix.postRotate(-90f)
         Bitmap.createBitmap(
             bitmap,
             0,
@@ -52,8 +55,8 @@ fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
             true
         )
     } else {
-        matrix.postRotate(-90f)
-        matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
+        matrix.postRotate(90f)
+        matrix.postScale(1f, 1f, bitmap.width / -2f, bitmap.height / -2f)
         Bitmap.createBitmap(
             bitmap,
             0,
@@ -95,5 +98,11 @@ fun reduceFileImage(file: File,isBackCamera:Boolean): File {
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 
     return file
+}
+
+fun formatDateTime(isoDateString: String): String {
+    val dateTime = ZonedDateTime.parse(isoDateString)
+    val dateFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+    return dateFormatter.format(dateTime)
 }
 

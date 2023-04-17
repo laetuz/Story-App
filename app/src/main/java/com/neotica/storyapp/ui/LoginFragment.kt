@@ -59,6 +59,7 @@ class LoginFragment : Fragment() {
             btLogin = btnLogin
             btRegister = btnRegister
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            btLogin.isEnabled = false
         }
         btRegister.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginToRegisterFragment()
@@ -110,30 +111,33 @@ class LoginFragment : Fragment() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             viewModel.login(email, password)
+            showLoading(true)
         }
         viewModel.responseLogin.observe(viewLifecycleOwner) { login ->
+            showLoading(true)
             when (login) {
                 is ApiResult.Success -> {
                     val loginResult = login.data
                     saveToken(loginResult)
                     Toast.makeText(context, "success login", Toast.LENGTH_SHORT).show()
-                    //showLoading(false)
+                    showLoading(false)
                     Log.d("Neotica", "Success login $etEmail")
                 }
                 is ApiResult.Error -> {
                     showDialogError()
-                    // showLoading(false)
+                     showLoading(false)
                     Log.d("Neotica", "error login ${etEmail.text} ${etPassword.text}")
                 }
                 is ApiResult.Loading -> {
-                    // showLoading(true)
+                     showLoading(true)
                     Log.d("Neotica", "loading login")
-                }
-                else -> {
-                    Log.d("Neotica", "doesnt even go inside")
                 }
             }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {
