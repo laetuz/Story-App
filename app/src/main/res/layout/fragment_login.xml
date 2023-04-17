@@ -17,16 +17,40 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_martin"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/iv_martin_gram" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_cloud"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/iv_cloud" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_martin">
 
         <com.neotica.storyapp.design.EmailCustomView
             android:id="@+id/ed_login_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
 
         <com.neotica.storyapp.design.PasswordCustomView
             android:id="@+id/ed_login_password"
@@ -34,17 +58,30 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:text="@string/login" />
 
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:text="@string/register" />
     </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_register"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

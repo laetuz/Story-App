@@ -1,5 +1,6 @@
 package com.neotica.storyapp.ui
 
+import android.animation.ObjectAnimator
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -53,6 +54,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showAnimation()
         binding.apply {
             etEmail = edLoginEmail
             etPassword = edLoginPassword
@@ -138,6 +140,14 @@ class LoginFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showAnimation(){
+        ObjectAnimator.ofFloat(binding.ivCloud, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 3000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 
     override fun onDestroy() {
