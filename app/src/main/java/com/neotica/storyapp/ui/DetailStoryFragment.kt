@@ -6,12 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.neotica.storyapp.databinding.FragmentDetailStoryBinding
-import com.neotica.storyapp.ui.viewmodel.MainViewModel
 import com.neotica.storyapp.util.formatDateTime
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 class DetailStoryFragment : Fragment() {
     private var _binding: FragmentDetailStoryBinding? = null
@@ -32,9 +27,9 @@ class DetailStoryFragment : Fragment() {
         //insert logic here
         val bundle = DetailStoryFragmentArgs.fromBundle(arguments as Bundle)
         binding.apply {
-            Glide.with(root).load(bundle.image.toString()).into(ivStory)
-            tvName.text = bundle.name
-            tvDescription.text = bundle.desc
+            Glide.with(root).load(bundle.image.toString()).into(ivDetailPhoto)
+            tvItemName.text = bundle.name
+            tvDetailDescription.text = bundle.desc
             tvDate.text = "Created at: " + formatDateTime(bundle.created)
         }
     }

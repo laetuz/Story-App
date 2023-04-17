@@ -1,82 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ImageView
+        android:id="@+id/iv_preview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="300dp"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/cd_picture"
+        android:scaleType="centerCrop"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toTopOf="@id/et_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.066" />
+
+    <TextView
+        android:id="@+id/tv_insert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_insert"
+        app:layout_constraintTop_toTopOf="@id/iv_preview"
+        app:layout_constraintBottom_toBottomOf="@id/iv_preview"
+        app:layout_constraintStart_toStartOf="@id/iv_preview"
+        app:layout_constraintEnd_toEndOf="@id/iv_preview"
+        />
+
+    <EditText
+            android:id="@+id/et_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:context=".ui.add.AddStoryActivity">
-            <ImageView
-                android:id="@+id/iv_preview"
-                android:layout_margin="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/cd_picture" />
-            <LinearLayout
+            android:layout_margin="16dp"
+            android:autofillHints=""
+            android:hint="@string/et_desc"
+            android:inputType="textMultiLine"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <Button
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:id="@+id/btn_camera"
-                    android:layout_width="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:layout_height="50dp"
-                    android:text="@string/btn_camera" />
-                <Button
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/btn_gallery"
-                    android:layout_width="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:layout_height="50dp"
-                    android:text="@string/btn_gallery" />
-            </LinearLayout>
+        <Button
+            android:id="@+id/btn_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="@string/btn_camera"
+            app:layout_constraintBottom_toTopOf="@id/btn_upload"
+            app:layout_constraintEnd_toStartOf="@+id/btn_gallery"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
-                android:inputType="textMultiLine"
-                android:layout_margin="16dp"
-                android:id="@+id/et_desc"
-                android:gravity="top"
-                android:paddingTop="16dp"
-                android:hint="@string/et_desc"
-                android:paddingHorizontal="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:autofillHints="" />
+        <Button
+            android:id="@+id/btn_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="@string/btn_gallery"
+            app:layout_constraintBottom_toTopOf="@id/btn_upload"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_camera" />
 
-            <Button
-                android:id="@+id/btn_upload"
-                android:layout_marginHorizontal="16dp"
-                android:layout_width="match_parent"
-                android:paddingHorizontal="20dp"
-                android:layout_height="50dp"
-                android:text="@string/btn_upload"/>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_upload"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/btn_upload"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="3dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

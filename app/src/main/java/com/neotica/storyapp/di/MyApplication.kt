@@ -10,7 +10,11 @@ class MyApplication : Application() {
         GlobalContext.startKoin {
             androidContext(this@MyApplication)
             modules(
-                networkModule, registerViewModule, loginViewModule, mainViewModule, addStoryViewModule
+                networkModule,
+                registerViewModule,
+                loginViewModule,
+                mainViewModule,
+                addStoryViewModule
             )
         }
     }

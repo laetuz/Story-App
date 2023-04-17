@@ -87,6 +87,7 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
                         showClearButton()
                         return true
                     }
+
                     MotionEvent.ACTION_UP -> {
                         clearImage =
                             ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
@@ -96,6 +97,7 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
                         hideClearButton()
                         return true
                     }
+
                     else -> return false
                 }
             } else return false
@@ -119,15 +121,16 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) {
                     showClearButton()
-                    if (s.toString().length < 6) {
+                    passValid = if (s.toString().length < 6) {
                         showWarning()
-                        passValid = false
+                        false
                     } else {
                         hideWarning()
-                        passValid = true
+                        true
                     }
                 } else hideClearButton()
             }
+
             override fun afterTextChanged(s: Editable) {
             }
         })

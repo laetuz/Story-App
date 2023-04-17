@@ -18,9 +18,21 @@ class EmailCustomView : AppCompatEditText, View.OnTouchListener {
     private lateinit var background: Drawable
     private lateinit var warning: Drawable
 
-    constructor(context: Context) : super(context) {init()}
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs){init()}
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr){init()}
+    constructor(context: Context) : super(context) {
+        init()
+    }
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        init()
+    }
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        init()
+    }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -68,7 +80,7 @@ class EmailCustomView : AppCompatEditText, View.OnTouchListener {
             if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
                 clearButtonEnd = (clearImage.intrinsicWidth + paddingStart).toFloat()
                 when {
-                    event?.x !!< clearButtonEnd -> isClearButtonClicked = true
+                    event?.x!! < clearButtonEnd -> isClearButtonClicked = true
                 }
             } else {
                 clearButtonStart = (width - paddingEnd - clearImage.intrinsicWidth).toFloat()
@@ -84,6 +96,7 @@ class EmailCustomView : AppCompatEditText, View.OnTouchListener {
                         showClearButton()
                         return true
                     }
+
                     MotionEvent.ACTION_UP -> {
                         clearImage =
                             ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
@@ -93,6 +106,7 @@ class EmailCustomView : AppCompatEditText, View.OnTouchListener {
                         hideClearButton()
                         return true
                     }
+
                     else -> return false
                 }
             } else return false
@@ -100,7 +114,7 @@ class EmailCustomView : AppCompatEditText, View.OnTouchListener {
         return false
     }
 
-    private fun init(){
+    private fun init() {
         background = ContextCompat.getDrawable(context, R.drawable.selector_input) as Drawable
         passwordIcon = ContextCompat.getDrawable(context, R.drawable.selector_email) as Drawable
         clearImage = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable

@@ -1,8 +1,6 @@
-package com.neotica.storyapp.models
+package com.neotica.storyapp.response.user
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
 
 data class UserLogin(

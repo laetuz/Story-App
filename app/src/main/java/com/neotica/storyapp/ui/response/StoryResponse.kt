@@ -6,18 +6,6 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-data class StoryResponse(
-
-    @field:SerializedName("listStory")
-    val listStory: List<ListStoryItem>,
-
-    @field:SerializedName("error")
-    val error: Boolean,
-
-    @field:SerializedName("message")
-    val message: String
-)
-
 @Parcelize
 @Entity
 data class ListStoryItem(
@@ -44,4 +32,4 @@ data class ListStoryItem(
 
     @field:SerializedName("lat")
     val lat: Double
-): Parcelable
+) : Parcelable

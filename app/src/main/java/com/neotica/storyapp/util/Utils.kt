@@ -1,5 +1,5 @@
 package com.neotica.storyapp.util
-import android.app.Application
+
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,13 +7,16 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
-import com.neotica.storyapp.R
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.util.*
+import java.util.Locale
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy"
 
@@ -25,20 +28,6 @@ val timeStamp: String = SimpleDateFormat(
 fun createTempFile(context: Context): File {
     val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     return File.createTempFile(timeStamp, ".jpg", storageDir)
-}
-
-
-
-fun createFile(application: Application): File {
-    val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
-        File(it, application.resources.getString(R.string.app_name)).apply { mkdirs() }
-    }
-
-    val outputDirectory = if (
-        mediaDir != null && mediaDir.exists()
-    ) mediaDir else application.filesDir
-
-    return File(outputDirectory, "$timeStamp.jpg")
 }
 
 fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
@@ -83,7 +72,8 @@ fun uriToFile(selectedImg: Uri, context: Context): File {
 
     return myFile
 }
-fun reduceFileImage(file: File,isBackCamera:Boolean): File {
+
+fun reduceFileImage(file: File, isBackCamera: Boolean): File {
     var bitmap = BitmapFactory.decodeFile(file.path)
     bitmap = rotateBitmap(bitmap, isBackCamera)
     var compressQuality = 100

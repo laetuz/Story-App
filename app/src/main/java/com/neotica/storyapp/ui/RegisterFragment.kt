@@ -3,26 +3,25 @@ package com.neotica.storyapp.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import com.neotica.storyapp.databinding.FragmentRegisterBinding
 import com.neotica.storyapp.design.PasswordCustomView
 import com.neotica.storyapp.ui.viewmodel.RegisterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : Fragment() {
-    private var _binding : FragmentRegisterBinding? = null
+    private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var etName : EditText
-    private lateinit var etEmail : EditText
-    private lateinit var etPassword : PasswordCustomView
-    private lateinit var registerButton : Button
+    private lateinit var etName: EditText
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: PasswordCustomView
+    private lateinit var registerButton: Button
     private val viewModel: RegisterViewModel by viewModel()
 
     private fun isValidEmail(str: String): Boolean {
@@ -50,7 +49,7 @@ class RegisterFragment : Fragment() {
             etPassword = edRegisterPassword
             registerButton = btnRegister
         }
-        etName.addTextChangedListener(object : TextWatcher{
+        etName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
                 start: Int,
@@ -66,7 +65,7 @@ class RegisterFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-        etEmail.addTextChangedListener(object : TextWatcher{
+        etEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
                 start: Int,
@@ -82,7 +81,7 @@ class RegisterFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-        etPassword.addTextChangedListener(object  : TextWatcher{
+        etPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -99,22 +98,23 @@ class RegisterFragment : Fragment() {
                 val etEmail = edRegisterEmail.text.toString()
                 val etPass = edRegisterPassword.text.toString()
                 viewModel.signup(etName, etEmail, etPass)
-                viewModel.success.observe(viewLifecycleOwner){
-                    if (it){
+                viewModel.success.observe(viewLifecycleOwner) {
+                    if (it) {
                         Toast.makeText(context, "User Registered.", Toast.LENGTH_SHORT).show()
                         onDestroy()
                     } else {
-                        Toast.makeText(context, "Failed to register user.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Failed to register user.", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
         }
     }
 
-    private fun showButton(){
+    private fun showButton() {
         binding.apply {
             registerButton.isEnabled =
-                etPassword.text !=null && isValidPassword(etPassword.text.toString()) &&
+                etPassword.text != null && isValidPassword(etPassword.text.toString()) &&
                         etEmail.text != null && isValidEmail(etEmail.text.toString()) &&
                         etName.text.isNotEmpty()
         }

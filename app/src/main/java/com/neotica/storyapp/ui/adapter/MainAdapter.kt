@@ -15,9 +15,9 @@ class MainAdapter(
     private val listener: StoryListener
 ) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: ItemStoryBinding):RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root)
 
-    interface StoryListener{
+    interface StoryListener {
         fun onClick(story: Story)
     }
 
@@ -33,12 +33,12 @@ class MainAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val story = listStory[position]
         holder.binding.apply {
-            tvName.text = story.name
+            tvItemName.text = story.name
             tvDate.text = formatDateTime(story.createdAt)
 
             Glide.with(context)
                 .load(story.photoUrl)
-                .into(ivStory)
+                .into(ivItemPhoto)
         }
         holder.itemView.setOnClickListener {
             listener.onClick(story)

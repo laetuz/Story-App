@@ -29,9 +29,3 @@ val networkModule = module {
     }
 }
 
-/*val preferencesModule = module {
-    single {
-        LoginPreferences.getInstance(androidContext().)
-    }
-}*/
-

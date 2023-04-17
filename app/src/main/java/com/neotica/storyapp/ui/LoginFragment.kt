@@ -22,7 +22,7 @@ import com.neotica.storyapp.design.PasswordCustomView
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.viewmodel.LoginViewModel
-import com.neotica.storyapp.models.UserLogin
+import com.neotica.storyapp.response.user.UserLogin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
@@ -47,7 +47,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -69,12 +68,18 @@ class LoginFragment : Fragment() {
         }
         etEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { showButton() }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                showButton()
+            }
+
             override fun afterTextChanged(s: Editable?) {}
         })
         etPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { showButton() }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                showButton()
+            }
+
             override fun afterTextChanged(s: Editable?) {}
         })
         login()
@@ -88,17 +93,18 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun navigateToMain(){
+    private fun navigateToMain() {
         val action = LoginFragmentDirections.actionLoginToMainFragment()
         NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun saveToken(loginResult: UserLogin) {
-        Log.d("neotica","token saved.")
+        Log.d("neotica", "token saved.")
         val prefLogin = LoginPreferences(requireContext())
         prefLogin.setToken(loginResult.token)
         navigateToMain()
     }
+
     private fun showDialogError() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
@@ -125,13 +131,15 @@ class LoginFragment : Fragment() {
                     showLoading(false)
                     Log.d("Neotica", "Success login $etEmail")
                 }
+
                 is ApiResult.Error -> {
                     showDialogError()
-                     showLoading(false)
+                    showLoading(false)
                     Log.d("Neotica", "error login ${etEmail.text} ${etPassword.text}")
                 }
+
                 is ApiResult.Loading -> {
-                     showLoading(true)
+                    showLoading(true)
                     Log.d("Neotica", "loading login")
                 }
             }
@@ -142,7 +150,7 @@ class LoginFragment : Fragment() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showAnimation(){
+    private fun showAnimation() {
         ObjectAnimator.ofFloat(binding.ivCloud, View.TRANSLATION_X, -30f, 30f).apply {
             duration = 3000
             repeatCount = ObjectAnimator.INFINITE

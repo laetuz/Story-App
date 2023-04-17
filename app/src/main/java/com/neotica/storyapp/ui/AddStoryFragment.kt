@@ -1,8 +1,8 @@
 package com.neotica.storyapp.ui
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -21,7 +21,7 @@ import com.neotica.storyapp.databinding.FragmentAddStoryBinding
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.viewmodel.AddStoryViewModel
-import com.neotica.storyapp.util.Constant.CAMERA_X_RESULT
+import com.neotica.storyapp.util.reduceFileImage
 import com.neotica.storyapp.util.rotateBitmap
 import com.neotica.storyapp.util.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
@@ -30,15 +30,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 
 class AddStoryFragment : Fragment() {
     private var _binding: FragmentAddStoryBinding? = null
     private val binding get() = _binding!!
     private var getFile: File? = null
-    private  var isBackCamera:Boolean = false
+    private var isBackCamera: Boolean = false
     private lateinit var currentPhotoPath: String
     private val viewModel: AddStoryViewModel by viewModel()
 
@@ -46,24 +44,24 @@ class AddStoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentAddStoryBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //insert logic here
+
         val prefLogin = LoginPreferences(requireContext())
         val token = prefLogin.getToken()
-        if (token.isNullOrEmpty()){
+        if (token.isNullOrEmpty()) {
             val action = MainFragmentDirections.actionMainFragmentToLogin()
             findNavController().navigate(action)
         }
         letsBind()
+        showAnimation()
     }
 
-    private fun letsBind(){
+    private fun letsBind() {
         binding.apply {
             btnCamera.setOnClickListener {
                 startTakePhoto()
@@ -79,7 +77,7 @@ class AddStoryFragment : Fragment() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.resolveActivity(requireContext().packageManager)
 
-        createTempFile("temp_", ".jpg", requireContext().applicationContext.cacheDir).also {
+        File.createTempFile("temp_", ".jpg", requireContext().applicationContext.cacheDir).also {
             val photoURI: Uri = FileProvider.getUriForFile(
                 requireContext(),
                 "com.neotica.storyapp",
@@ -105,7 +103,7 @@ class AddStoryFragment : Fragment() {
             val resultModule = rotateBitmap(BitmapFactory.decodeFile(myFile.path))
 
             binding.ivPreview.setImageBitmap(resultModule)
-            Log.d("neotica","camera inserted into iv")
+            Log.d("neotica", "camera inserted into iv")
         }
     }
 
@@ -113,11 +111,11 @@ class AddStoryFragment : Fragment() {
         showLoading(true)
         if (getFile != null) {
             val desc = binding.etDesc.text.toString()
-            if (desc.isEmpty()){
+            if (desc.isEmpty()) {
                 binding.etDesc.error = "Enter Description"
                 binding.etDesc.requestFocus()
-            }else{
-                val file = reduceFileImage(getFile as File,isBackCamera)
+            } else {
+                val file = reduceFileImage(getFile as File, isBackCamera)
                 val description = desc.toRequestBody("text/plain".toMediaType())
                 val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
@@ -128,42 +126,31 @@ class AddStoryFragment : Fragment() {
                 val prefLogin = LoginPreferences(requireContext())
                 var token = prefLogin.getToken().toString()
                 token = "Bearer $token"
-                viewModel.responseUpload.observe(viewLifecycleOwner){
-                    when (it){
+                viewModel.responseUpload.observe(viewLifecycleOwner) {
+                    when (it) {
                         is ApiResult.Success -> {
-                            Toast.makeText(context, "Photo has been uploaded.", Toast.LENGTH_SHORT).show()
-                            val action = AddStoryFragmentDirections.actionAddStoryFragmentToMainFragment()
+                            Toast.makeText(context, "Photo has been uploaded.", Toast.LENGTH_SHORT)
+                                .show()
+                            val action =
+                                AddStoryFragmentDirections.actionAddStoryFragmentToMainFragment()
                             showLoading(false)
                             findNavController().navigate(action)
                             findNavController().popBackStack()
+                            val intent = Intent(requireActivity(), MainActivity::class.java)
+                            requireActivity().finish()
+                            startActivity(intent)
                         }
+
                         is ApiResult.Error -> {}
                         is ApiResult.Loading -> {}
                     }
                 }
-                viewModel.uploadStory(token,imageMultipart,description)
+                viewModel.uploadStory(token, imageMultipart, description)
 
             }
         } else {
             Toast.makeText(context, "Please input the picture first.", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun reduceFileImage(file: File,isBackCamera:Boolean): File {
-        var bitmap = BitmapFactory.decodeFile(file.path)
-        bitmap = rotateBitmap(bitmap, isBackCamera)
-        var compressQuality = 100
-        var streamLength: Int
-        do {
-            val bmpStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
-            val bmpPicByteArray = bmpStream.toByteArray()
-            streamLength = bmpPicByteArray.size
-            compressQuality -= 5
-        } while (streamLength > 1000000)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
-
-        return file
     }
 
     private fun startGallery() {
@@ -182,8 +169,16 @@ class AddStoryFragment : Fragment() {
             val myFile = uriToFile(selectedImg, requireContext())
             getFile = myFile
             binding.ivPreview.setImageURI(selectedImg)
-            Log.d("neotica","Image inserted into iv")
+            Log.d("neotica", "Image inserted into iv")
         }
+    }
+
+    private fun showAnimation() {
+        ObjectAnimator.ofFloat(binding.tvInsert, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 3000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 
     override fun onDestroy() {

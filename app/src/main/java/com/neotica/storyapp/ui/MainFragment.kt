@@ -17,7 +17,6 @@ import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.adapter.MainAdapter
 import com.neotica.storyapp.ui.response.Story
 import com.neotica.storyapp.ui.viewmodel.MainViewModel
-import com.neotica.storyapp.util.Constant.DATA
 import com.neotica.storyapp.util.Constant.REQUEST_CODE_PERMISSIONS
 import com.neotica.storyapp.util.Constant.REQUIRED_PERMISSIONS
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -63,10 +62,12 @@ class MainFragment : Fragment() {
                     showLoading(false)
                     binding.swipeRefreshLayout.isRefreshing = false
                 }
+
                 is ApiResult.Error -> {
                     Log.e("STORIES", it.errorMessage)
                     showLoading(false)
                 }
+
                 is ApiResult.Loading -> {
                     showLoading(true)
                 }
@@ -107,10 +108,17 @@ class MainFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+    @Deprecated(
+        "Deprecated in Java", ReplaceWith(
+            "requireActivity().menuInflater.inflate(R.menu.menu, menu)",
+            "com.neotica.storyapp.R"
+        )
+    )
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         requireActivity().menuInflater.inflate(R.menu.menu, menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_logout -> {

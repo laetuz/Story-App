@@ -22,7 +22,7 @@ class RegisterViewModel(
     private val _success = MutableLiveData<Boolean>()
     val success: LiveData<Boolean> = _success
 
-    fun signup(name:String,email:String,pass:String) {
+    fun signup(name: String, email: String, pass: String) {
         _isLoading.value = true
         val registerInfo = UserBody(name, email, pass)
         apiService.register(registerInfo).enqueue(object :
@@ -32,6 +32,7 @@ class RegisterViewModel(
                 _success.value = false
                 Log.d("regLog", "failed to register.")
             }
+
             override fun onResponse(
                 call: Call<RegisterResponse>,
                 response: Response<RegisterResponse>

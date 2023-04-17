@@ -1,14 +1,11 @@
 package com.neotica.storyapp.retrofit
 
-import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
-import com.neotica.storyapp.models.ResponseLogin
-import com.neotica.storyapp.models.UserLogin
 import com.neotica.storyapp.response.user.User
 import com.neotica.storyapp.response.user.UserBody
+import com.neotica.storyapp.response.user.UserLogin
 import com.neotica.storyapp.ui.response.ResponseStatus
 import com.neotica.storyapp.ui.response.ResponseStories
-import com.neotica.storyapp.ui.response.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -16,12 +13,6 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
-/*    @FormUrlEncoded
-    @POST("v1/login")
-    fun login(
-        @Field("email")email:String,
-        @Field("password")password:String,
-    ): Call<ResponseLogin>*/
 
     @GET("v1/stories")
     suspend fun getStory(
@@ -46,11 +37,6 @@ interface ApiService {
         @Part("description") description: RequestBody,
     ): Response<ResponseStatus>
 
-    @GET("v1/stories")
-    suspend fun getAllStory(
-        @Query("size") size: Int,
-        @Header("Authorization") token: String
-    ): StoryResponse
 }
 
 data class RegisterResponse(
