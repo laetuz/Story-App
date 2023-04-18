@@ -11,6 +11,7 @@
         android:maxSdkVersion="18" />
     <application
         android:name=".di.MyApplication"
+        android:windowSoftInputMode="adjustResize"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
