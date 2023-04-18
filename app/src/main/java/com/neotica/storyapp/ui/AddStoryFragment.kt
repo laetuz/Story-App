@@ -112,6 +112,7 @@ class AddStoryFragment : Fragment() {
         if (getFile != null) {
             val desc = binding.etDesc.text.toString()
             if (desc.isEmpty()) {
+                showLoading(false)
                 binding.etDesc.error = "Enter Description"
                 binding.etDesc.requestFocus()
             } else {
@@ -141,14 +142,20 @@ class AddStoryFragment : Fragment() {
                             startActivity(intent)
                         }
 
-                        is ApiResult.Error -> {}
-                        is ApiResult.Loading -> {}
+                        is ApiResult.Error -> {
+                            showLoading(false)
+                        }
+
+                        is ApiResult.Loading -> {
+                            showLoading(false)
+                        }
                     }
                 }
                 viewModel.uploadStory(token, imageMultipart, description)
 
             }
         } else {
+            showLoading(false)
             Toast.makeText(context, "Please input the picture first.", Toast.LENGTH_SHORT).show()
         }
     }
