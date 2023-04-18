@@ -121,7 +121,7 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) {
                     showClearButton()
-                    passValid = if (s.toString().length < 6) {
+                    passValid = if (s.toString().length < 8) {
                         showWarning()
                         false
                     } else {
