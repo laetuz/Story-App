@@ -1,5 +1,6 @@
 package com.neotica.storyapp.ui
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.neotica.storyapp.databinding.FragmentRegisterBinding
 import com.neotica.storyapp.design.PasswordCustomView
 import com.neotica.storyapp.ui.viewmodel.RegisterViewModel
@@ -24,19 +26,10 @@ class RegisterFragment : Fragment() {
     private lateinit var registerButton: Button
     private val viewModel: RegisterViewModel by viewModel()
 
-    private fun isValidEmail(str: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(str).matches()
-    }
-
-    private fun isValidPassword(str: String): Boolean {
-        return str.length >= 6
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,6 +42,7 @@ class RegisterFragment : Fragment() {
             etPassword = edRegisterPassword
             registerButton = btnRegister
         }
+        registerButton.isEnabled = false
         etName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -93,6 +87,7 @@ class RegisterFragment : Fragment() {
             }
         })
         registerButton.setOnClickListener {
+            showLoading(true)
             binding.apply {
                 val etName = edRegisterName.text.toString()
                 val etEmail = edRegisterEmail.text.toString()
@@ -100,15 +95,26 @@ class RegisterFragment : Fragment() {
                 viewModel.signup(etName, etEmail, etPass)
                 viewModel.success.observe(viewLifecycleOwner) {
                     if (it) {
+                        showLoading(false)
                         Toast.makeText(context, "User Registered.", Toast.LENGTH_SHORT).show()
-                        onDestroy()
+                        findNavController().popBackStack()
                     } else {
-                        Toast.makeText(context, "Failed to register user.", Toast.LENGTH_SHORT)
+                        showLoading(false)
+                        Toast.makeText(context, "Failed to register the user.", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             }
         }
+        showAnimation()
+    }
+
+    private fun isValidEmail(str: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(str).matches()
+    }
+
+    private fun isValidPassword(str: String): Boolean {
+        return str.length >= 6
     }
 
     private fun showButton() {
@@ -118,6 +124,18 @@ class RegisterFragment : Fragment() {
                         etEmail.text != null && isValidEmail(etEmail.text.toString()) &&
                         etName.text.isNotEmpty()
         }
+    }
+
+    private fun showAnimation() {
+        ObjectAnimator.ofFloat(binding.ivRegister, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 3000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {

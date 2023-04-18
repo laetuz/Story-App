@@ -7,6 +7,9 @@
     <!--Login/Register-->
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="name">Name:</string>
+    <string name="email">Email:</string>
+    <string name="password">Password:</string>
 
     <!--Item List-->
     <string name="image_preview">Image Preview</string>
