@@ -70,6 +70,7 @@ class AddStoryFragment : Fragment() {
             btnUpload.setOnClickListener {
                 uploadImage()
             }
+            btnLocation.setOnClickListener { Toast.makeText(context, "Feature not yet available.", Toast.LENGTH_SHORT).show() }
         }
     }
 
@@ -100,7 +101,7 @@ class AddStoryFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             val myFile = File(currentPhotoPath)
             getFile = myFile
-            val resultModule = rotateBitmap(BitmapFactory.decodeFile(myFile.path))
+            val resultModule = BitmapFactory.decodeFile(myFile.path)
 
             binding.ivPreview.setImageBitmap(resultModule)
             Log.d("neotica", "camera inserted into iv")
@@ -116,7 +117,7 @@ class AddStoryFragment : Fragment() {
                 binding.etDesc.error = "Enter Description"
                 binding.etDesc.requestFocus()
             } else {
-                val file = reduceFileImage(getFile as File, isBackCamera)
+                val file = reduceFileImage(getFile as File)
                 val description = desc.toRequestBody("text/plain".toMediaType())
                 val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
@@ -147,7 +148,7 @@ class AddStoryFragment : Fragment() {
                         }
 
                         is ApiResult.Loading -> {
-                            showLoading(false)
+                            showLoading(true)
                         }
                     }
                 }

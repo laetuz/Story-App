@@ -7,9 +7,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
+import androidx.exifinterface.media.ExifInterface
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
@@ -30,10 +32,29 @@ fun createTempFile(context: Context): File {
     return File.createTempFile(timeStamp, ".jpg", storageDir)
 }
 
+fun rotateImage(img: Bitmap, degree: Int): Bitmap {
+    val matrix = Matrix().apply { postRotate(degree.toFloat()) }
+    val rotatedImg = Bitmap.createBitmap(img, 0, 0, img.width, img.height, matrix, true)
+    img.recycle()
+    return rotatedImg
+}
+
+@Throws(IOException::class)
+fun rotateImageIfRequired(img: Bitmap, selectedImage: Uri): Bitmap {
+    val ei = ExifInterface(selectedImage.path!!)
+
+    return when (ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
+        ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(img, 90)
+        ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(img, 180)
+        ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(img, 270)
+        else -> img
+    }
+}
+
 fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
     val matrix = Matrix()
     return if (isBackCamera) {
-        matrix.postRotate(-90f)
+        matrix.postRotate(90f)
         Bitmap.createBitmap(
             bitmap,
             0,
@@ -44,7 +65,17 @@ fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
             true
         )
     } else {
-        bitmap
+        matrix.postRotate(-90f)
+        matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
+        Bitmap.createBitmap(
+            bitmap,
+            0,
+            0,
+            bitmap.width,
+            bitmap.height,
+            matrix,
+            true
+        )
     }
 }
 
@@ -63,9 +94,8 @@ fun uriToFile(selectedImg: Uri, context: Context): File {
     return myFile
 }
 
-fun reduceFileImage(file: File, isBackCamera: Boolean): File {
-    var bitmap = BitmapFactory.decodeFile(file.path)
-    bitmap = rotateBitmap(bitmap, isBackCamera)
+fun reduceFileImage(file: File): File{
+    val bitmap = BitmapFactory.decodeFile(file.path)
     var compressQuality = 100
     var streamLength: Int
     do {
@@ -76,7 +106,6 @@ fun reduceFileImage(file: File, isBackCamera: Boolean): File {
         compressQuality -= 5
     } while (streamLength > 1000000)
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
-
     return file
 }
 

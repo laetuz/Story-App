@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun isValidPassword(str: String): Boolean {
-        return str.length >= 6
+        return str.length >= 8
     }
 
     override fun onCreateView(
