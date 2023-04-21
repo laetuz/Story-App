@@ -3,7 +3,6 @@ package com.neotica.storyapp.ui
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,8 +20,8 @@ import com.neotica.storyapp.databinding.FragmentAddStoryBinding
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.viewmodel.AddStoryViewModel
+import com.neotica.storyapp.util.handleSamplingAndRotationBitmap
 import com.neotica.storyapp.util.reduceFileImage
-import com.neotica.storyapp.util.rotateBitmap
 import com.neotica.storyapp.util.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,6 +30,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.io.IOException
 
 class AddStoryFragment : Fragment() {
     private var _binding: FragmentAddStoryBinding? = null
@@ -101,10 +101,14 @@ class AddStoryFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             val myFile = File(currentPhotoPath)
             getFile = myFile
-            val resultModule = BitmapFactory.decodeFile(myFile.path)
 
-            binding.ivPreview.setImageBitmap(resultModule)
-            Log.d("neotica", "camera inserted into iv")
+            try {
+                val bitmap = handleSamplingAndRotationBitmap(requireContext(), Uri.fromFile(myFile))
+                binding.ivPreview.setImageBitmap(bitmap)
+                Log.d("neotica", "camera inserted into iv")
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
 
