@@ -29,8 +29,10 @@ class LoginViewModel(private val apiService: ApiService) : ViewModel() {
                 isLoading.value = false
                 if (result != null) {
                     _responseLogin.value = ApiResult.Success(result.loginResult)
+                    Log.d("neotica", "Response succeed")
+                } else {
+                    _responseLogin.value = ApiResult.Error("Error: ${response.code()}")
                 }
-                Log.d("neotica", "sukses mengambil respons")
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
