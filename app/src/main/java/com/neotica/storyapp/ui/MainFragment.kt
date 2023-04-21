@@ -17,6 +17,7 @@ import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.adapter.MainAdapter
 import com.neotica.storyapp.ui.response.Story
 import com.neotica.storyapp.ui.viewmodel.MainViewModel
+import com.neotica.storyapp.util.Constant.ACCESS_PERMISSION_DEFAULT
 import com.neotica.storyapp.util.Constant.REQUEST_CODE_PERMISSIONS
 import com.neotica.storyapp.util.Constant.REQUIRED_PERMISSIONS
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -134,10 +135,29 @@ class MainFragment : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (!allPermissionsGranted()) {
-                Toast.makeText(context, "Permission not granted.", Toast.LENGTH_SHORT).show()
+        when (requestCode) {
+            ACCESS_PERMISSION_DEFAULT -> {
+                if (grantResults.isNotEmpty()) {
+                    when {
+                        grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
+                            Toast.makeText(context, "location permission accepted", Toast.LENGTH_SHORT).show()
+                        }
+                        grantResults.size > 1 && grantResults[1] == PackageManager.PERMISSION_GRANTED -> {
+                            Toast.makeText(context, "camera permission accepted", Toast.LENGTH_SHORT).show()
+                        }
+                        grantResults.size > 2 && grantResults[2] == PackageManager.PERMISSION_GRANTED -> {
+                            Toast.makeText(context, "storage permission accepted", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            Toast.makeText(context, "permission denied", Toast.LENGTH_SHORT).show()
+                            if (requestCode == REQUEST_CODE_PERMISSIONS) {
+                                Toast.makeText(context, "Permission not granted.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
             }
+            else -> Toast.makeText(context, "Not the request code", Toast.LENGTH_SHORT).show()
         }
     }
 
