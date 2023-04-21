@@ -28,4 +28,3 @@ val networkModule = module {
         retrofit.create(ApiService::class.java)
     }
 }
-
