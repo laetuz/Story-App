@@ -55,7 +55,7 @@ class MainFragment : Fragment() {
             val action = findNavController().currentDestination?.id
             action?.let { findNavController().navigate(it) }
         }
-        viewModel.stories.observe(viewLifecycleOwner) {
+        viewModel.getStories(location = null).observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResult.Success -> {
                     setupList(it.data)
@@ -179,7 +179,7 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.stories
+        viewModel.getStories(location = null)
     }
 
     override fun onDestroy() {

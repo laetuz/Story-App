@@ -3,6 +3,7 @@ package com.neotica.storyapp.di
 import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.viewmodel.AddStoryViewModel
 import com.neotica.storyapp.ui.viewmodel.LoginViewModel
+import com.neotica.storyapp.ui.viewmodel.MainRepository
 import com.neotica.storyapp.ui.viewmodel.MainViewModel
 import com.neotica.storyapp.ui.viewmodel.RegisterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -21,4 +22,8 @@ val mainViewModule = module {
 
 val addStoryViewModule = module {
     viewModel { AddStoryViewModel(get()) }
+}
+
+val mainRepo = module {
+    single { MainRepository(get(),get()) }
 }

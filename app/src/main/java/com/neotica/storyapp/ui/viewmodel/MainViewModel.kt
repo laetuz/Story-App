@@ -1,47 +1,37 @@
 package com.neotica.storyapp.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.liveData
 import com.neotica.storyapp.models.ApiResult
-import com.neotica.storyapp.models.LoginPreferences
-import com.neotica.storyapp.retrofit.ApiService
 import com.neotica.storyapp.ui.response.Story
-import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val apiService: ApiService,
+    private val mainRepo: MainRepository,
     application: Application
 ) : ViewModel() {
-    @SuppressLint("StaticFieldLeak")
-    private val context = application.applicationContext.applicationContext
-    private val _stories = MutableLiveData<ApiResult<List<Story>>>()
-    val stories: LiveData<ApiResult<List<Story>>> = _stories
 
-    init {
-        getStory()
-    }
-
-    private fun getStory() {
-        viewModelScope.launch {
-            _stories.value = ApiResult.Loading
-            val token = LoginPreferences(context).getToken()
-            try {
-                val response = apiService.getStory(token = "Bearer $token")
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    if (result != null) {
-                        _stories.value = ApiResult.Success(result.listStory)
-                    }
-                } else {
-                    _stories.value = ApiResult.Error("Error: ${response.code()}")
-                }
-            } catch (e: Exception) {
-                _stories.value = ApiResult.Error(e.message.toString())
-            }
+    fun getStories(location: Int?): LiveData<ApiResult<List<Story>>> {
+        return liveData {
+            emit(ApiResult.Loading)
+            emitSource(mainRepo.getStories(location))
         }
     }
+
+
+/*    fun getStoryWithLocation(
+        token: String,
+        location: Int?
+    ) = flow<ApiResult<ServerResponse>> {
+        emit(Resource.loading())
+        val response = apiService.getAllStories(token, location = location)
+        response.let {
+            if (!it.error) emit(Resource.success(it))
+            else emit(Resource.error(it.message))
+        }
+    }.catch {
+        Log.d(TAG, "getAllStories: ${it.message}")
+        emit(Resource.error(it.message ?: ""))
+    }.flowOn(Dispatchers.IO)*/
 }

@@ -14,7 +14,8 @@ class MyApplication : Application() {
                 registerViewModule,
                 loginViewModule,
                 mainViewModule,
-                addStoryViewModule
+                addStoryViewModule,
+                mainRepo
             )
         }
     }
