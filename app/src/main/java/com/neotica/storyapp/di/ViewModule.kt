@@ -17,7 +17,7 @@ val loginViewModule = module {
 
 val mainViewModule = module {
     single { LoginPreferences(get()) }
-    viewModel { MainViewModel(get(), get()) }
+    viewModel { MainViewModel(get()) }
 }
 
 val addStoryViewModule = module {

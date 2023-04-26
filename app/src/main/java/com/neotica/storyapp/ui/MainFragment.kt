@@ -26,6 +26,7 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by viewModel()
+    private lateinit var arrayListStories: ArrayList<Story>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +56,7 @@ class MainFragment : Fragment() {
             val action = findNavController().currentDestination?.id
             action?.let { findNavController().navigate(it) }
         }
-        viewModel.getStories(location = null).observe(viewLifecycleOwner) {
+        viewModel.getStories().observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResult.Success -> {
                     setupList(it.data)
@@ -93,6 +94,8 @@ class MainFragment : Fragment() {
                 }
             })
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        arrayListStories = ArrayList()
+        arrayListStories.addAll(listStory)
         binding.rvStory.adapter = adapterStory
         binding.rvStory.layoutManager = layoutManager
     }
@@ -105,6 +108,11 @@ class MainFragment : Fragment() {
         val prefLogin = LoginPreferences(requireContext())
         prefLogin.clearToken()
         val action = MainFragmentDirections.actionMainFragmentToLogin()
+        findNavController().navigate(action)
+    }
+
+    private fun menuMap(){
+        val action = MainFragmentDirections.actionMainFragmentToMapsFragment(arrayListStories.toTypedArray())
         findNavController().navigate(action)
     }
 
@@ -123,6 +131,9 @@ class MainFragment : Fragment() {
         when (item.itemId) {
             R.id.menu_logout -> {
                 logout()
+            }
+            R.id.menu_map -> {
+                menuMap()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -179,7 +190,7 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getStories(location = null)
+        viewModel.getStories()
     }
 
     override fun onDestroy() {

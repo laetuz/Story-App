@@ -16,6 +16,11 @@ interface ApiService {
 
     @GET("v1/stories")
     suspend fun getStory(
+        @Header("Authorization") token: String
+    ): Response<ResponseStories>
+
+    @GET("v1/stories")
+    suspend fun getStoryMap(
         @Header("Authorization") token: String,
         @Query("location") location: Int? = null
     ): Response<ResponseStories>

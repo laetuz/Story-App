@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_mainFragment_to_addStoryFragment"
             app:destination="@id/addStoryFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailStoryFragment"
@@ -66,5 +69,14 @@
             app:destination="@id/mainFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.neotica.storyapp.ui.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <argument
+            android:name="arrayListStories"
+            app:argType="com.neotica.storyapp.ui.response.Story[]" />
     </fragment>
 </navigation>
