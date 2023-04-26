@@ -1,6 +1,5 @@
 package com.neotica.storyapp.ui.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -8,14 +7,13 @@ import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.ui.response.Story
 
 class MainViewModel(
-    private val mainRepo: MainRepository,
-    application: Application
+    private val mainRepo: MainRepository
 ) : ViewModel() {
 
-    fun getStories(location: Int?): LiveData<ApiResult<List<Story>>> {
+    fun getStories(): LiveData<ApiResult<List<Story>>> {
         return liveData {
             emit(ApiResult.Loading)
-            emitSource(mainRepo.getStories(location))
+            emitSource(mainRepo.getStories())
         }
     }
 

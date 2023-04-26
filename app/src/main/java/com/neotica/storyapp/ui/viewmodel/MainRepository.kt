@@ -12,13 +12,13 @@ class MainRepository(
     private val apiService: ApiService,
     private val context: Context
 ) {
-    suspend fun getStories(location: Int?): LiveData<ApiResult<List<Story>>> {
+    suspend fun getStories(): LiveData<ApiResult<List<Story>>> {
         val result = MutableLiveData<ApiResult<List<Story>>>()
         result.value = ApiResult.Loading
         val token = LoginPreferences(context).getToken()
 
         try {
-            val response = apiService.getStory("Bearer $token", location)
+            val response = apiService.getStory("Bearer $token")
             if (response.isSuccessful) {
                 val stories = response.body()?.listStory ?: emptyList()
                 result.value = ApiResult.Success(stories)
