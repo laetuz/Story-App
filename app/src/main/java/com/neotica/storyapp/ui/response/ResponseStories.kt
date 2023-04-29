@@ -2,6 +2,7 @@ package com.neotica.storyapp.ui.response
 
 
 import com.google.gson.annotations.SerializedName
+import com.neotica.storyapp.database.StoriesEntity
 
 data class ResponseStories(
     @SerializedName("error")

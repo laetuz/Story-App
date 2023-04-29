@@ -1,8 +1,12 @@
 package com.neotica.storyapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.ui.response.Story
 
@@ -17,19 +21,15 @@ class MainViewModel(
         }
     }
 
-
-/*    fun getStoryWithLocation(
-        token: String,
-        location: Int?
-    ) = flow<ApiResult<ServerResponse>> {
-        emit(Resource.loading())
-        val response = apiService.getAllStories(token, location = location)
-        response.let {
-            if (!it.error) emit(Resource.success(it))
-            else emit(Resource.error(it.message))
+    suspend fun getMap(): LiveData<List<Story>> {
+        return Transformations.map(mainRepo.getStories()) { apiResult ->
+            when(apiResult) {
+                is ApiResult.Success -> apiResult.data
+                else -> emptyList() // or handle other error cases
+            }
         }
-    }.catch {
-        Log.d(TAG, "getAllStories: ${it.message}")
-        emit(Resource.error(it.message ?: ""))
-    }.flowOn(Dispatchers.IO)*/
+    }
+
+    fun getStoryPaging(): LiveData<PagingData<Story>> = mainRepo.getStoriesPaging().cachedIn(viewModelScope)
+
 }

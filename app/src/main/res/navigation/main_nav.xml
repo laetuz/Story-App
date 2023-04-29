@@ -75,8 +75,8 @@
         android:name="com.neotica.storyapp.ui.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" >
-        <argument
+<!--        <argument
             android:name="arrayListStories"
-            app:argType="com.neotica.storyapp.ui.response.Story[]" />
+            app:argType="com.neotica.storyapp.ui.response.Story[]" />-->
     </fragment>
 </navigation>

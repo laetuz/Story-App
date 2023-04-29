@@ -78,6 +78,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
     implementation "androidx.room:room-runtime:2.5.0-alpha02"
     kapt "androidx.room:room-compiler:2.5.0-alpha02"
+    implementation 'androidx.room:room-paging:2.5.0-alpha02'
 
     //Camera
     def camerax_version = "1.1.0-beta02"
@@ -88,6 +89,4 @@ dependencies {
     //Paging3
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 
-    //Room Paging(Remote mediator)
-    implementation 'androidx.room:room-paging:2.5.0-alpha02'
 }

@@ -16,13 +16,17 @@ interface ApiService {
 
     @GET("v1/stories")
     suspend fun getStory(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("page") page : Int? = null,
+        @Query("size") size: Int? = null,
     ): Response<ResponseStories>
 
     @GET("v1/stories")
     suspend fun getStoryMap(
         @Header("Authorization") token: String,
-        @Query("location") location: Int? = null
+        @Query("location") location: Int = 0,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null
     ): Response<ResponseStories>
 
     @POST("v1/login")

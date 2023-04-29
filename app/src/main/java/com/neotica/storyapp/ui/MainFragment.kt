@@ -8,13 +8,16 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.storyapp.R
 import com.neotica.storyapp.databinding.FragmentMainBinding
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.adapter.MainAdapter
+import com.neotica.storyapp.ui.adapter.MainPagingAdapter
 import com.neotica.storyapp.ui.response.Story
 import com.neotica.storyapp.ui.viewmodel.MainViewModel
 import com.neotica.storyapp.util.Constant.ACCESS_PERMISSION_DEFAULT
@@ -59,7 +62,7 @@ class MainFragment : Fragment() {
         viewModel.getStories().observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResult.Success -> {
-                    setupList(it.data)
+                    setupListPager(viewModel.getStoryPaging())
                     showLoading(false)
                     binding.swipeRefreshLayout.isRefreshing = false
                 }
@@ -94,10 +97,42 @@ class MainFragment : Fragment() {
                 }
             })
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        arrayListStories = ArrayList()
-        arrayListStories.addAll(listStory)
+/*        arrayListStories = ArrayList()
+        arrayListStories.addAll(listStory)*/
         binding.rvStory.adapter = adapterStory
         binding.rvStory.layoutManager = layoutManager
+    }
+
+    private fun setupMap(listStory: LiveData<List<Story>>) {
+        arrayListStories = ArrayList()
+   //     arrayListStories.addAll(listStory)
+    }
+
+    private fun setupListPager(listStory: LiveData<PagingData<Story>>) {
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        binding.rvStory.layoutManager = layoutManager
+
+        val adapterPaging =
+            MainPagingAdapter(listStory, requireContext(), object : MainAdapter.StoryListener {
+                override fun onClick(story: Story) {
+                    val image = story.photoUrl
+                    val name = story.name
+                    val desc = story.description
+                    val created = story.createdAt
+                    val action = MainFragmentDirections.actionMainFragmentToDetailStoryFragment(
+                        image,
+                        name,
+                        desc,
+                        created
+                    )
+                    findNavController().navigate(action)
+                }
+            })
+        viewModel.getStoryPaging().observe(viewLifecycleOwner){
+            adapterPaging.submitData(lifecycle, it)
+        }
+        binding.rvStory.adapter = adapterPaging
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -112,7 +147,7 @@ class MainFragment : Fragment() {
     }
 
     private fun menuMap(){
-        val action = MainFragmentDirections.actionMainFragmentToMapsFragment(arrayListStories.toTypedArray())
+        val action = MainFragmentDirections.actionMainFragmentToMapsFragment()
         findNavController().navigate(action)
     }
 

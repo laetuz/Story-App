@@ -15,7 +15,8 @@ class MyApplication : Application() {
                 loginViewModule,
                 mainViewModule,
                 addStoryViewModule,
-                mainRepo
+                mainRepo,
+                mapsCombo
             )
         }
     }

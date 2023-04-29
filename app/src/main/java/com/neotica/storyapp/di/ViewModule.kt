@@ -5,6 +5,8 @@ import com.neotica.storyapp.ui.viewmodel.AddStoryViewModel
 import com.neotica.storyapp.ui.viewmodel.LoginViewModel
 import com.neotica.storyapp.ui.viewmodel.MainRepository
 import com.neotica.storyapp.ui.viewmodel.MainViewModel
+import com.neotica.storyapp.ui.viewmodel.MapsRepository
+import com.neotica.storyapp.ui.viewmodel.MapsViewModel
 import com.neotica.storyapp.ui.viewmodel.RegisterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -26,4 +28,9 @@ val addStoryViewModule = module {
 
 val mainRepo = module {
     single { MainRepository(get(),get()) }
+}
+
+val mapsCombo = module {
+    single { MapsRepository(get(),get()) }
+    viewModel { MapsViewModel(get()) }
 }
