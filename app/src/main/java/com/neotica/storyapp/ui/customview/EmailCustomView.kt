@@ -1,6 +1,7 @@
-package com.neotica.storyapp.design
+package com.neotica.storyapp.ui.customview
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,10 +12,9 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.neotica.storyapp.R
 
-class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
+class EmailCustomView : AppCompatEditText, View.OnTouchListener {
     private lateinit var clearImage: Drawable
     private lateinit var passwordIcon: Drawable
-    private lateinit var background: Drawable
     private lateinit var warning: Drawable
 
     constructor(context: Context) : super(context) {
@@ -31,6 +31,14 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
         defStyleAttr
     ) {
         init()
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+    }
+
+    private fun isValidEmail(str: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(str).matches()
     }
 
     private fun showWarning() {
@@ -106,11 +114,9 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
     }
 
     private fun init() {
+        passwordIcon = ContextCompat.getDrawable(context, R.drawable.selector_email) as Drawable
         clearImage = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
-        passwordIcon = ContextCompat.getDrawable(context, R.drawable.selector_password) as Drawable
-        background = ContextCompat.getDrawable(context, R.drawable.selector_input) as Drawable
-        warning = ContextCompat.getDrawable(context, R.drawable.warning_password) as Drawable
-        var passValid: Boolean = false
+        warning = ContextCompat.getDrawable(context, R.drawable.warning_email) as Drawable
         setOnTouchListener(this)
 
         setButtonDrawables(startOfTheText = passwordIcon)
@@ -121,17 +127,14 @@ class PasswordCustomView : AppCompatEditText, View.OnTouchListener {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) {
                     showClearButton()
-                    passValid = if (s.toString().length < 8) {
+                    if (!isValidEmail(s.toString())) {
                         showWarning()
-                        false
-                    } else {
-                        hideWarning()
-                        true
-                    }
+                    } else hideWarning()
                 } else hideClearButton()
             }
 
             override fun afterTextChanged(s: Editable) {
+                // Do nothing.
             }
         })
     }

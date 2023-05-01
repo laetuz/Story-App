@@ -29,6 +29,7 @@
         app:layout_constraintVertical_bias="0.209">
 
         <TextView
+            android:id="@+id/label_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
@@ -36,9 +37,13 @@
 
         <EditText
             android:id="@+id/ed_register_name"
+            android:labelFor="@id/label_name"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:autofillHints="name"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +51,7 @@
             android:layout_marginHorizontal="5dp"
             android:text="@string/email" />
 
-        <com.neotica.storyapp.design.EmailCustomView
+        <com.neotica.storyapp.ui.customview.EmailCustomView
             android:id="@+id/ed_register_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,7 +64,7 @@
             android:layout_marginHorizontal="5dp"
             android:text="@string/password" />
 
-        <com.neotica.storyapp.design.PasswordCustomView
+        <com.neotica.storyapp.ui.customview.PasswordCustomView
             android:id="@+id/ed_register_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

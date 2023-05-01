@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.neotica.storyapp.databinding.FragmentRegisterBinding
-import com.neotica.storyapp.design.PasswordCustomView
+import com.neotica.storyapp.ui.customview.PasswordCustomView
 import com.neotica.storyapp.ui.viewmodel.RegisterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -99,7 +99,10 @@ class RegisterFragment : Fragment() {
                         Toast.makeText(context, "User Registered.", Toast.LENGTH_SHORT).show()
                         findNavController().popBackStack()
                     } else {
-                        showLoading(false)
+                        val load = viewModel.isLoading.value
+                        if (load != null) {
+                            showLoading(load)
+                        }
                         Toast.makeText(context, "Failed to register the user.", Toast.LENGTH_SHORT)
                             .show()
                     }

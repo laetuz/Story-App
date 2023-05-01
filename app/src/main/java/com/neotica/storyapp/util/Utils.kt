@@ -19,6 +19,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+import kotlin.math.roundToInt
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy"
 
@@ -74,8 +75,8 @@ private fun calculateInSampleSize(
 
     if (height > reqHeight || width > reqWidth) {
         // Calculate ratios of height and width to requested height and width
-        val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
-        val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
+        val heightRatio = (height.toFloat() / reqHeight.toFloat()).roundToInt()
+        val widthRatio = (width.toFloat() / reqWidth.toFloat()).roundToInt()
 
         // Choose the smallest ratio as inSampleSize value, this will guarantee a final image
         // with both dimensions larger than or equal to the requested height and width.
@@ -104,34 +105,6 @@ fun rotateImageIfRequired(img: Bitmap, selectedImage: Uri): Bitmap {
         ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(img, 180)
         ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(img, 270)
         else -> img
-    }
-}
-
-fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
-    val matrix = Matrix()
-    return if (isBackCamera) {
-        matrix.postRotate(90f)
-        Bitmap.createBitmap(
-            bitmap,
-            0,
-            0,
-            bitmap.width,
-            bitmap.height,
-            matrix,
-            true
-        )
-    } else {
-        matrix.postRotate(-90f)
-        matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
-        Bitmap.createBitmap(
-            bitmap,
-            0,
-            0,
-            bitmap.width,
-            bitmap.height,
-            matrix,
-            true
-        )
     }
 }
 

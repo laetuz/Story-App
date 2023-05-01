@@ -13,16 +13,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.neotica.storyapp.databinding.FragmentLoginBinding
-import com.neotica.storyapp.design.PasswordCustomView
+import com.neotica.storyapp.ui.customview.PasswordCustomView
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.viewmodel.LoginViewModel
-import com.neotica.storyapp.response.user.UserLogin
+import com.neotica.storyapp.retrofit.response.auth.UserLogin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
@@ -31,8 +32,7 @@ class LoginFragment : Fragment() {
     private lateinit var etEmail: EditText
     private lateinit var etPassword: PasswordCustomView
     private lateinit var btLogin: Button
-    private lateinit var btRegister: Button
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var textRegister: TextView
     private val viewModel: LoginViewModel by viewModel()
 
     private fun isValidEmail(str: String): Boolean {
@@ -58,11 +58,10 @@ class LoginFragment : Fragment() {
             etEmail = edLoginEmail
             etPassword = edLoginPassword
             btLogin = btnLogin
-            btRegister = btnRegister
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            textRegister = tvRegister
             btLogin.isEnabled = false
         }
-        btRegister.setOnClickListener {
+        textRegister.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginToRegisterFragment()
             findNavController().navigate(action)
         }
@@ -118,7 +117,7 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
-            viewModel.login(email, password)
+            viewModel.loginUser(email, password)
             showLoading(true)
         }
         viewModel.responseLogin.observe(viewLifecycleOwner) { login ->

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.storyapp.databinding.ItemStoryBinding
-import com.neotica.storyapp.ui.response.Story
+import com.neotica.storyapp.retrofit.response.story.Story
 import com.neotica.storyapp.util.formatDateTime
 
 class MainAdapter(

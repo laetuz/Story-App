@@ -6,53 +6,21 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neotica.storyapp.databinding.ItemStoryBinding
 import com.neotica.storyapp.ui.DetailStoryFragmentArgs
-import com.neotica.storyapp.ui.response.Story
+import com.neotica.storyapp.retrofit.response.story.Story
 import com.neotica.storyapp.util.formatDateTime
 
 class MainPagingAdapter(
-    diffCallback: LiveData<PagingData<Story>>,
     private val context: Context,
     private val listener: MainAdapter.StoryListener
 ) : PagingDataAdapter<Story, MainPagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
-    interface StoryListener {
-        fun onClick(story: Story)
-    }
-
     class ViewHolder(val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(story: Story, listener: StoryListener) {
-            binding.apply {
-                tvItemName.text = story.name
-                tvDate.text = formatDateTime(story.createdAt)
-
-                Glide.with(ivItemPhoto)
-                    .load(story.photoUrl)
-                    .into(ivItemPhoto)
-
-                itemView.setOnClickListener {
-                    listener.onClick(story)
-                }
-
-                val intent = Intent(itemView.context, DetailStoryFragmentArgs::class.java).apply {
-                    putExtra("extra_detail", story)
-                }
-                val optionsCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    itemView.context as Activity,
-                    androidx.core.util.Pair(binding.ivItemPhoto, "profile"),
-                    androidx.core.util.Pair(binding.tvItemName, "name"),
-                    androidx.core.util.Pair(binding.tvDate, "date")
-                )
-                itemView.context.startActivity(intent, optionsCompat.toBundle())
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

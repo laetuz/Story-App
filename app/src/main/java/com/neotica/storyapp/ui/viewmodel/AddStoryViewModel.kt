@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.retrofit.ApiService
-import com.neotica.storyapp.ui.response.ResponseStatus
+import com.neotica.storyapp.retrofit.response.story.ResponseStatus
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

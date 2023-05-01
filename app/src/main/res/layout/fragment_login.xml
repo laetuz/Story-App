@@ -36,29 +36,31 @@
         app:srcCompat="@drawable/iv_cloud" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:orientation="vertical"
         android:padding="10dp"
-        android:layout_marginHorizontal="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_martin">
 
-        <com.neotica.storyapp.design.EmailCustomView
+        <com.neotica.storyapp.ui.customview.EmailCustomView
             android:id="@+id/ed_login_email"
-            android:drawablePadding="10dp"
+            android:contentDescription="@string/cd_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:drawablePadding="10dp" />
 
-        <com.neotica.storyapp.design.PasswordCustomView
+        <com.neotica.storyapp.ui.customview.PasswordCustomView
             android:id="@+id/ed_login_password"
-            android:drawablePadding="10dp"
+            android:contentDescription="@string/cd_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
             android:inputType="textPassword" />
-
 
     </LinearLayout>
 
@@ -67,22 +69,34 @@
         android:id="@+id/btn_login"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:text="@string/login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_register"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/linear_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="125dp"
+    <LinearLayout
+        android:id="@+id/linear_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="@string/register"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_login" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="@string/register_text" />
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/design_default_color_primary"
+            android:text="@string/tv_click" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

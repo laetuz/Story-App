@@ -18,7 +18,7 @@ import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
 import com.neotica.storyapp.ui.adapter.MainAdapter
 import com.neotica.storyapp.ui.adapter.MainPagingAdapter
-import com.neotica.storyapp.ui.response.Story
+import com.neotica.storyapp.retrofit.response.story.Story
 import com.neotica.storyapp.ui.viewmodel.MainViewModel
 import com.neotica.storyapp.util.Constant.ACCESS_PERMISSION_DEFAULT
 import com.neotica.storyapp.util.Constant.REQUEST_CODE_PERMISSIONS
@@ -29,7 +29,6 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by viewModel()
-    private lateinit var arrayListStories: ArrayList<Story>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,42 +78,13 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setupList(listStory: List<Story>) {
-        val adapterStory =
-            MainAdapter(listStory, requireContext(), object : MainAdapter.StoryListener {
-                override fun onClick(story: Story) {
-                    val image = story.photoUrl
-                    val name = story.name
-                    val desc = story.description
-                    val created = story.createdAt
-                    val action = MainFragmentDirections.actionMainFragmentToDetailStoryFragment(
-                        image,
-                        name,
-                        desc,
-                        created
-                    )
-                    findNavController().navigate(action)
-                }
-            })
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-/*        arrayListStories = ArrayList()
-        arrayListStories.addAll(listStory)*/
-        binding.rvStory.adapter = adapterStory
-        binding.rvStory.layoutManager = layoutManager
-    }
-
-    private fun setupMap(listStory: LiveData<List<Story>>) {
-        arrayListStories = ArrayList()
-   //     arrayListStories.addAll(listStory)
-    }
-
     private fun setupListPager(listStory: LiveData<PagingData<Story>>) {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         binding.rvStory.layoutManager = layoutManager
 
         val adapterPaging =
-            MainPagingAdapter(listStory, requireContext(), object : MainAdapter.StoryListener {
+            MainPagingAdapter(requireContext(), object : MainAdapter.StoryListener {
                 override fun onClick(story: Story) {
                     val image = story.photoUrl
                     val name = story.name

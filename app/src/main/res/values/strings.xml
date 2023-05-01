@@ -10,11 +10,16 @@
     <string name="name">Name:</string>
     <string name="email">Email:</string>
     <string name="password">Password:</string>
+    <string name="register_text">Don\'t have an account?</string>
+    <string name="tv_click">Click here</string>
+    <string name="cd_password">Insert Password</string>
+    <string name="cd_email">Insert Email</string>
+    <string name="martinus">martinus</string>
 
     <!--Item List-->
-    <string name="image_preview">Image Preview</string>
     <string name="name_placeholder">Name</string>
     <string name="desc_placeholder">Hello this is description</string>
+    <string name="tv_loading">Loading…</string>
 
     <!--AddStory-->
     <string name="btn_upload">Upload</string>
@@ -22,6 +27,6 @@
     <string name="btn_camera">Camera</string>
     <string name="btn_location">Get Location</string>
     <string name="et_desc">Enter description…</string>
-    <string name="cd_picture">Picture preview.</string>
+    <string name="cd_picture">Picture Preview.</string>
     <string name="tv_insert">Insert picture from Camera or Gallery.</string>
 </resources>

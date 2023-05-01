@@ -1,4 +1,4 @@
-package com.neotica.storyapp.ui.response
+package com.neotica.storyapp.retrofit.response.story
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 @Entity("story_entity")
 @Parcelize
 data class Story(
-    val ava: String?,
     val name: String,
     @PrimaryKey
     val id: String,

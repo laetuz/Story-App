@@ -1,4 +1,4 @@
-package com.neotica.storyapp.response.user
+package com.neotica.storyapp.retrofit.response.auth
 
 import com.google.gson.annotations.SerializedName
 
