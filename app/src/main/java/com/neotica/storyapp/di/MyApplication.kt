@@ -11,12 +11,8 @@ class MyApplication : Application() {
             androidContext(this@MyApplication)
             modules(
                 networkModule,
-                registerViewModule,
-                loginViewModule,
-                mainViewModule,
-                addStoryViewModule,
-                mainRepo,
-                mapsCombo
+                viewModelModule,
+                repoModule
             )
         }
     }
