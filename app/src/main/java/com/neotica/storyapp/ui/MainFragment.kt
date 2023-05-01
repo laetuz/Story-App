@@ -8,9 +8,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neotica.storyapp.R
 import com.neotica.storyapp.databinding.FragmentMainBinding
@@ -61,7 +59,7 @@ class MainFragment : Fragment() {
         viewModel.getStories().observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResult.Success -> {
-                    setupListPager(viewModel.getStoryPaging())
+                    setupListPager()
                     showLoading(false)
                     binding.swipeRefreshLayout.isRefreshing = false
                 }
@@ -78,7 +76,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setupListPager(listStory: LiveData<PagingData<Story>>) {
+    private fun setupListPager() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         binding.rvStory.layoutManager = layoutManager
