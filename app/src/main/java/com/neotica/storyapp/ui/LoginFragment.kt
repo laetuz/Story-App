@@ -1,13 +1,10 @@
 package com.neotica.storyapp.ui
 
 import android.animation.ObjectAnimator
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,14 +13,15 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.neotica.storyapp.databinding.FragmentLoginBinding
-import com.neotica.storyapp.ui.customview.PasswordCustomView
 import com.neotica.storyapp.models.ApiResult
 import com.neotica.storyapp.models.LoginPreferences
-import com.neotica.storyapp.ui.viewmodel.LoginViewModel
 import com.neotica.storyapp.retrofit.response.auth.UserLogin
+import com.neotica.storyapp.ui.customview.PasswordCustomView
+import com.neotica.storyapp.ui.viewmodel.LoginViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
